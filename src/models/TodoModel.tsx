@@ -12,7 +12,7 @@ export class TodoModel implements TodoInterface {
     this.completed = false;
   }
 
-  markComplete() {    
+  markComplete() {
     this.completed = true;
   }
 }

@@ -14,6 +14,12 @@ function App() {
     setTodoItems([...todoItems, newTodo]);
   };
 
+  const deleteTodo = (id: number) => {
+    // filter out the item with the given id
+    const updatedTodoItems = todoItems.filter((todo) => todo.id !== id);
+    setTodoItems(updatedTodoItems);
+  };
+
   return (
     <div className="App" style={{ padding: 50 }}>
       {todoItems.map((todoItem, index) => {
@@ -36,16 +42,25 @@ function App() {
             >
               {todoItem.text} - {todoItem.completed.toString()}
             </span>
-            <button
-              onClick={() => {
-                if (todoItem.completed) return; // if the todo is already completed, do nothing
-                todoItem.markComplete(); // mark the todoItem as completed
-                setTodoItems([...todoItems]); // update the state
-              }}
-              disabled={todoItem.completed}
-            >
-              Complete
-            </button>
+            <div>
+              <button
+                onClick={() => {
+                  if (todoItem.completed) return; // if the todo is already completed, do nothing
+                  todoItem.markComplete(); // mark the todoItem as completed
+                  setTodoItems([...todoItems]); // update the state
+                }}
+                disabled={todoItem.completed}
+              >
+                Complete
+              </button>
+              <button
+                onClick={() => {
+                  deleteTodo(todoItem.id); // delete the todoItem
+                }}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         );
       })}
