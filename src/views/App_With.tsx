@@ -10,14 +10,12 @@ function App() {
 
   const addTodo = () => {
     // add a new TodoModel to the array
-    const newTodo = new TodoModel(inputText);
-    setTodoItems([...todoItems, newTodo]);
+    setTodoItems([...todoItems, new TodoModel(inputText)]);
   };
 
   const deleteTodo = (id: number) => {
     // filter out the item with the given id
-    const updatedTodoItems = todoItems.filter((todo) => todo.id !== id);
-    setTodoItems(updatedTodoItems);
+    setTodoItems(todoItems.filter((todo) => todo.id !== id));
   };
 
   return (
@@ -32,16 +30,28 @@ function App() {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
+              alignItems: "center",
             }}
             key={index}
           >
-            <span
-              style={{
-                textDecoration: todoItem.completed ? "line-through" : "",
-              }}
-            >
-              {todoItem.text} - {todoItem.completed.toString()}
-            </span>
+            <small>{todoItem.id}</small>
+            {todoItem.editing ? (
+              <input
+                value={todoItem.text}
+                onChange={(e) => {
+                  todoItem.editTodo(e.target.value);
+                  setTodoItems([...todoItems]);
+                }}
+              />
+            ) : (
+              <span
+                style={{
+                  textDecoration: todoItem.completed ? "line-through" : "",
+                }}
+              >
+                {todoItem.text}
+              </span>
+            )}
             <div>
               <button
                 onClick={() => {
@@ -59,6 +69,14 @@ function App() {
                 }}
               >
                 Delete
+              </button>
+              <button
+                onClick={() => {
+                  todoItem.toggleEditing(); // toggle the editing state
+                  setTodoItems([...todoItems]); // update the state
+                }}
+              >
+                {todoItem.editing ? "Save" : "Edit"}
               </button>
             </div>
           </div>
